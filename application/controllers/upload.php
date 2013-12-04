@@ -27,16 +27,34 @@ class Upload extends CI_Controller {
 		}
 		else
 		{
-			$data = array('upload_data' => $this->upload->data());
-			// $this->load->view('upload_success', $data);
-			$this->_analyze($data['upload_data']);
+			$upload_data = $this->upload->data();
+			if ($this->_unzip($upload_data['full_path'], "uploads/{$upload_data['raw_name']}") === TRUE)
+			{
+				unlink($upload_data['full_path']);
+				$this->_analyze($upload_data);
+				$this->load->view('upload_success', array('upload_data' => $upload_data));
+			}
+			else
+				show_error('Failed to unzip file.');
 		}
 	}
 	
 	private function _analyze($upload_data)
 	{
-		echo "application/third_party/yasca/yasca.exe --silent --report CSVReport --output {$upload_data['raw_name']} {$upload_data['full_path']}";
-		// exec("application/third_party/yasca/yasca.exe --silent --report CSVReport --output {$upload_data['raw_name']} {$upload_data['full_path']}");
+			// echo "(cd application/third_party/yasca && yasca --silent --report CSVReport --output ../../../results/{$upload_data['raw_name']} ../../../uploads/{$upload_data['raw_name']})";
+			exec("(cd application/third_party/yasca && yasca --silent --report CSVReport --output ../../../results/{$upload_data['raw_name']} ../../../uploads/{$upload_data['raw_name']})");
+	}
+
+	private function _unzip($file_path, $destination)
+	{
+		$zip = new ZipArchive();
+		if ($zip->open($file_path) === TRUE) {
+			$zip->extractTo($destination);
+			$zip->close();
+			return TRUE;
+		}
+		else
+			return FALSE;
 	}
 }
 ?>
