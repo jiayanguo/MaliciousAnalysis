@@ -52,13 +52,13 @@ class CSVReport extends Report {
             if ($category_link == "") $category_link_field = $category;
             
             fwrite($handle,
-                    "\"$row_id\"," . 
-                    "\"$category\"," .
-                    "\"$plugin_name\"," .
-                    "\"$severity_description\"," .
-                    "\"$filename_base$line_number_field\"," .
-                    "\"$filename\"," .
-                    "\"$source\"\n");                   
+                    "`$row_id`," . 
+                    "`$category`," .
+                    "`$plugin_name`," .
+                    "`$severity_description`," .
+                    "`$filename_base$line_number_field`," .
+                    "`$filename`," .
+                    "`$source`\n");                   
         }
         
         fwrite($handle, $this->get_postamble());        
@@ -66,7 +66,7 @@ class CSVReport extends Report {
     }
     
     function get_preamble() {
-        return '"#","Category","Plugin Name","Severity","Location","Full Location","Message"' . "\n";
+        return '`#`,`Category`,`Plugin Name`,`Severity`,`Location`,`Full Location`,`Message`' . "\n";
     }
         
     function get_postamble() {
