@@ -1,0 +1,74 @@
+name = Banned Function
+file_type = C
+
+; Banned string copy functions
+grep = /strcpy|wcscpy|_tcscpy|_mbscpy|StrCpy|StrCpyA|StrCpyW|lstrcpy|lstrcpyA/
+grep = /lstrcpyW|strcpyA|strcpyW|_tccpy|_mbccpy/
+grep = /strncpy|wcsncpy|_tcsncpy|_mbsncpy|_mbsnbcpy|StrCpyN|StrCpyNA|StrCpyNW/
+grep = /StrNCpy|strcpynA|StrNCpyA|StrNCpyW|lstrcpyn|lstrcpynA|lstrcpynW|_fstrncpy/
+
+
+; Banned string concatenation functions
+grep = /strcat|wcscat|_tcscat|_mbscat|StrCat|StrCatA|StrCatW|lstrcat|lstrcatA/
+grep = /lstrcatW|StrCatBuffW|StrCatBuff|StrCatBuffA|StrCatChainW|strcatA|strcatW|_tccat|_mbccat/
+grep = /strncat|wcsncat|_tcsncat|_mbsncat|_mbsnbcat|StrCatN|StrCatNA|StrCatNW|StrNCat|StrNCatA/
+grep = /StrNCatW|lstrncat|lstrcatnA|lstrcatnW|lstrcatn|_fstrncat/
+
+; Banned sprintf functions
+grep = /wnsprintf|wnsprintfA|wnsprintfW|sprintfW|sprintfA|wsprintf|wsprintfW|wsprintfA|sprintf|swprintf|_stprintf/
+grep = /_snwprintf|_snprintf|_sntprintf|nsprintf/
+
+; Banned vararg sprintf functions
+grep = /wvsprintf|wvsprintfA|wvsprintfW|vsprintf|_vstprintf|vswprintf/
+grep = /_vsnprintf|_vsnwprintf|_vsntprintf|wvnsprintf|wvnsprintfA|wvnsprintfW/
+
+; Banned string tokenizing functions
+grep = /strtok|_tcstok|wcstok|_mbstok/
+
+; Banned path functions
+grep = /Makepath|_tmakepath|_makepath|_wmakepath/
+grep = /_splitpath|_tsplitpath|_wsplitpath/
+
+; Banned scanf functions
+grep = /scanf|wscanf|_tscanf|sscanf|swscanf|_stscanf/
+grep = /snscanf|snwscanf|_sntscanf/
+
+; Banned numeric conversion
+grep = /_itoa|_itow|_i64toa|_i64tow|_ui64toa|_ui64tot|_ui64tow|_ultoa|_ultot|_ultow/
+
+; Banned gets functions
+grep = /gets|_getts|_gettws/
+
+; Banned IsBad functions
+grep = /sBadWritePtr|IsBadHugeWritePtr|IsBadReadPtr|IsBadHugeReadPtr|IsBadCodePtr|IsBadStringPtr/
+
+; Banned OEM functions
+grep = /CharToOem|CharToOemA|CharToOemW|OemToChar|OemToCharA|OemToCharW|CharToOemBuffA|CharToOemBuffW/
+
+; Banned stack dynamic memory alloc functions
+grep = /alloca|_alloca/
+
+; Banned string length functions
+grep = /strlen|wcslen|_mbslen|_mbstrlen|StrLen|lstrlen/
+
+category = Unsafe/Banned Function
+severity = 3
+description =
+<p>
+    A function call was found that has been labeled as "unsafe" or "banned. Specifically, the function is now
+    considered banned by Microsoft. More information is available in <i>The Security Development Lifecycle</i> by
+    Michael Howard and Steve Lipner, Microsoft Press, 2006.
+
+    These functions should be replaced with safer alternatives, or at the minimum, verified that they are being used
+    in a safe manner.
+</p>
+<p>
+	<h4>References</h4>
+	<ul>
+            <li><a href="http://msdn.microsoft.com/en-us/library/bb288454.aspx" target=_"blank">Security Development Lifecycle (SDL) Banned Function Call</a></li>
+            <li><a href="http://www.usenix.org/events/usenix99/full_papers/millert/millert_html/index.html">strlcpy and strlcat - Consistent, Safe String Copy and Concatenation</a></li>
+            <li>Howard, Michael, David LeBlanc, and John Viega. 19 Deadly Sins of Software Development. New York, NY: McGraw-Hill, 2005. Chapter 1, "Buffer Overruns."</li>
+            <li><a href="http://www.owasp.org/ndex.php/Dangerous_Function">OWASP: Dangerous Function</a></li>
+	</ul>
+</p>
+END;
