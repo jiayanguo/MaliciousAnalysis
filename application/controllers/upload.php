@@ -4,7 +4,7 @@ class Upload extends CI_Controller {
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->helper(array('form', 'url'));
+		$this->load->helper(array('form', 'html', 'url'));
 	}
 
 	function index()
@@ -32,7 +32,8 @@ class Upload extends CI_Controller {
 			{
 				unlink($upload_data['full_path']);
 				$this->_analyze($upload_data);
-				$this->load->view('upload_success', array('upload_data' => $upload_data));
+				$data = $this->_read_csv('results/' . $upload_data['raw_name'] . '.csv');
+				$this->load->view('upload_success', array('data' => $data));
 			}
 			else
 				show_error('Failed to unzip file.');
@@ -41,8 +42,19 @@ class Upload extends CI_Controller {
 	
 	private function _analyze($upload_data)
 	{
-			// echo "(cd application/third_party/yasca && yasca --silent --report CSVReport --output ../../../results/{$upload_data['raw_name']} ../../../uploads/{$upload_data['raw_name']})";
 			exec("(cd application/third_party/yasca && yasca --silent --report CSVReport --output ../../../results/{$upload_data['raw_name']} ../../../uploads/{$upload_data['raw_name']})");
+	}
+	
+	private function _read_csv($file_path)
+	{
+		if (($handle = fopen($file_path, "r")) !== FALSE)
+		{
+			$data = array();
+			while (($fields = fgetcsv($handle, 1000, ",", "`")) !== FALSE)
+				$data[] = $fields;
+			fclose($handle);
+			return $data;
+		}
 	}
 
 	private function _unzip($file_path, $destination)
