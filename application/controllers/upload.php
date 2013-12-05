@@ -4,7 +4,7 @@ class Upload extends CI_Controller {
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->helper(array('form', 'html', 'url'));
+		$this->load->helper(array('form', 'html', 'url', 'xml'));
 	}
 
 	function index()
@@ -32,8 +32,9 @@ class Upload extends CI_Controller {
 			{
 				unlink($upload_data['full_path']);
 				$this->_analyze($upload_data);
-				$data = $this->_read_csv('results/' . $upload_data['raw_name'] . '.csv');
-				$this->load->view('upload_success', array('data' => $data));
+				$csv_data = $this->_read_csv('results/' . $upload_data['raw_name'] . '.csv');
+				$this->load->view('upload_success', array('csv_data' => $csv_data, 'csv_file_path' => 'results/' . $upload_data['raw_name'] . '.csv'));
+				$this->input->set_cookie(array('name' => 'csv_data', 'value' => serialize($csv_data)));
 			}
 			else
 				show_error('Failed to unzip file.');

@@ -186,11 +186,18 @@
 					border-right:  1px ridge darkgray !important;
 					font-family: Candara, Calibri, Verdana, Serif;
 					font-weight: bold;
+					color: #8a2be2;
+					cursor:hand;
+					cursor: pointer;
+				}
+				.header_title:hover 
+				{
+					color: #000000;
+					font-style: italic;
 				}
 				.header_left 
 				{
 					font-weight: bold;
-					text-align: right;
 					white-space: nowrap;
 					width: 130px;
 				}
@@ -327,15 +334,57 @@
 					opacity: 95%;
 				}
 			}
+			img#icon 
+			{
+				width:  15%; 
+				height: 50%;
+			}
+			.changeColor
+			{
+				color:Indigo;
+			}
 		</style>
+		<script language="javascript">
+			function redirectToHome()
+			{
+				open('/MaliciousAnalysis/','_self','resizable,location,menubar,toolbar,scrollbars,status');
+			}
+		</script>
 	</head>
 	<body>
+	
+	<table class="header_table" cellspacing="0" cellpadding="0">
+		<tr>
+			<td class="header_title" nowrap onclick="redirectToHome()">Static Analyzer&nbsp;<?php echo img('images/icon.jpg'); ?><!--<img src="icon.jpg" id="icon">-->&nbsp;&nbsp;&nbsp;</img></td>
+			<td style="width: 100%;">
+			<table style="border:0;">
+				<tr><td class= "header_left" nowrap>Report Generated:</td>
+					<td class="header_right">	
+						<?php
+							$filename = $csv_file_path;	
+							if( ! ini_get('date.timezone') )
+							{
+							   date_default_timezone_set('America/Chicago');
+							}	
+							if (file_exists($filename)) 
+							{
+								echo date("F d Y H:i:s.", filemtime($filename));
+							}
+						?>
+					</td></tr>
+				<tr><td class= "header_left" nowrap>Options:</td>
+					<td class="header_right">[<a href="javascript:q=(document.location.href);void(open('/MaliciousAnalysis/','_self','resizable,location,menubar,toolbar,scrollbars,status'));">Home</a>]</td></tr>
+			</table>
+			</div>
+			</td>
+		</tr>
+	</table>
 	
 	<table border="1">
 	<?php
 		$r = 1;
 		$categ = "";
-		foreach ($data as $row)
+		foreach ($csv_data as $row)
 		{
 			if ($r == 1)
 				echo '<thead><tr>';
@@ -360,7 +409,7 @@
 							if (strcmp($categ, $row[$c+1]) != 0)
 							{
 								$categ = $row[$c+1];
-								echo '<td colspan = "3">'.$categ.'</td>';
+								echo '<td class = "changeColor" colspan = "3">'.$categ.'</td>';
 								echo '</tr>';
 								echo '<tr>';
 							}
@@ -385,10 +434,19 @@
 								default:
 									echo '<td>';
 							}
+							
+							echo xml_convert($value).'</td>';
+						}
+						elseif ($c == 4)
+						{
+							echo '<td><a href = "'.$row[$c+1].'">' ;
+							echo xml_convert($value).'</a></td>';
 						}
 						else
+						{
 							echo '<td>';
-						echo htmlspecialchars($value).'</td>';
+							echo xml_convert($value).'</td>';
+						}
 					}
 				}
 			}
