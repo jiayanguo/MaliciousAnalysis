@@ -1,0 +1,3 @@
+#!/bin/bash
+cd /var/www/MaliciousAnalysis/yasca
+./yasca ./resources/test/ -o ./Result/AnalysisResult.html

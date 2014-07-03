@@ -1,9 +1,10 @@
 <?php 
-	system("cmd /c execute.bat",$yasca);
+	system("/bin/bash ./execute",$yasca);
+	$file_name=date('Y-m-d H:i:s').".html";
+	echo $file_name;
+	$file_path="../../result/".$file_name;
+	copy ("../../yasca/Result/AnalysisResult.html",  "../../result/".$file_name) or die( "No result" );
 	
-	copy ("G:/yasca/Result/AnalysisResult.html",  "../../result/result.html") or die( "No result" );
-	
-
 ?>
 
 
@@ -16,10 +17,9 @@
     </head>
     <body>
 	<script language="javascript" type="text/javascript"> 
-
-     setTimeout("javascript:location.href='../../result/result.html'", 1000); 
-
-     </script>
+	alert("See the Analysis result!");
+        setTimeout("javascript:location.href='<?php echo $file_path;?>'", 1000); 
+    	</script>
     </body>
     </html>  
 

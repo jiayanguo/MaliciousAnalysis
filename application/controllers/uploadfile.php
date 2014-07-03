@@ -17,7 +17,7 @@ function unzip_file($file, $destination){
 <?php
 function del_dir( $dir )
 {
-   if ( $handle = opendir( "$dir" ) )
+   if ( $handle = opendir( "$dir" ) )			
    {
      while ( false !== ( $item = readdir( $handle ) ) )
      {
@@ -44,9 +44,10 @@ function del_dir( $dir )
 
   if( $_FILES['file']['name'] != '' )
   {
-      copy ( $_FILES['file']['tmp_name'],  "../../upload/" . $_FILES['file']['name'] ) or die( "Could not copy file" );
-      del_dir("G:/yasca/resources/test/");
-      unzip_file("../../upload/".$_FILES['file']['name'], "G:/yasca/resources/test/");
+     // copy ( $_FILES['file']['tmp_name'],  "../../upload/" . $_FILES['file']['name'] ) or die( "Could not copy file" ); "../../upload/"
+//      del_dir("../../yasca/resources/test/");
+     // unzip_file($_FILES['file']['tmp_name'], "../../yasca/resources/test/");
+		copy($_FILES['file']['tmp_name'], "../../yasca/resources/test/". $_FILES['file']['name']);
   }
    else
    {
